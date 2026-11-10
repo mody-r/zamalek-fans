@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ترتيب الدوري | ZAMALEK FANS</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Cairo,sans-serif;background:#f4f4f4;color:#222}
+header{background:linear-gradient(135deg,#850b16,#c7192d);color:white;text-align:center;padding:25px 12px}
+header h1{font-size:27px;font-weight:900}
+header p{font-size:13px;color:#ffe0e4}
+.home{display:inline-block;background:white;color:#a20d1e;text-decoration:none;padding:8px 23px;border-radius:6px;margin-top:14px;font-weight:800}
+.container{max-width:1100px;margin:35px auto;padding:0 12px}
+h2{text-align:center;color:#a20d1e;font-size:25px;margin-bottom:8px}
+.sub{text-align:center;color:#777;font-size:13px;margin-bottom:25px}
+.table-box{background:white;border-radius:12px;overflow-x:auto;box-shadow:0 5px 22px #0001}
+table{width:100%;min-width:760px;border-collapse:collapse;text-align:center}
+th{background:#a20d1e;color:white;padding:13px 8px;font-size:13px;white-space:nowrap}
+td{padding:10px 8px;border-bottom:1px solid #eee;font-size:13px;font-weight:700}
+tr:hover{background:#fff5f6}
+.team-cell{display:flex;align-items:center;gap:9px;text-align:right;white-space:nowrap}
+.logo{width:34px;height:34px;object-fit:contain}
+.zamalek{background:#fff0f2;color:#a20d1e;font-weight:900}
+.zamalek td{font-weight:900}
+.points{color:#a20d1e;font-size:16px;font-weight:900}
+footer{margin-top:45px;background:#850b16;color:white;text-align:center;padding:22px;font-size:13px}
+.note{text-align:center;color:#777;font-size:12px;margin-top:17px}
+@media(max-width:600px){h2{font-size:21px}.container{margin:25px auto}}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ZAMALEK FANS</h1>
+<p>جدول ترتيب الدوري المصري الممتاز</p>
+<a class="home" href="index.html">الصفحة الرئيسية</a>
+</header>
+
+<div class="container">
+<h2>ترتيب الدوري المصري</h2>
+<p class="sub">موسم 2026 / 2027</p>
+
+<div class="table-box">
+<table>
+<thead>
+<tr>
+<th>المركز</th>
+<th>النادي</th>
+<th>لعب</th>
+<th>فوز</th>
+<th>تعادل</th>
+<th>هزيمة</th>
+<th>فارق الأهداف</th>
+<th>النقاط</th>
+</tr>
+</thead>
+<tbody id="standings"></tbody>
+</table>
+</div>
+
+<p class="note">الجدول لقطة بيانات منشورة بتاريخ 10 نوفمبر 2026، وليس تحديثًا مباشرًا.</p>
+</div>
+
+<footer>
+<p>ZAMALEK FANS © 2026</p>
+<p>الزمالك فوق الجميع</p>
+</footer>
+
+<script>
+const clubs = [
+["بيراميدز","pyramids-fc",8,8,0,0,15,24],
+["الأهلي","al-ahly-sc",8,6,2,0,9,20],
+["الزمالك","zamalek-sc",8,6,1,1,7,19],
+["سيراميكا كليوباترا","ceramica-cleopatra-fc",8,6,0,2,7,18],
+["الاتحاد السكندري","ittihad-alexandria",8,4,2,2,3,14],
+["مودرن سبورت","modern-sport-fc",8,4,1,3,2,13],
+["المقاولون العرب","el-mokawloon",8,3,2,3,3,11],
+["البنك الأهلي","bank-el-ahly",8,3,2,3,0,11],
+["سموحة","smouha",8,3,2,3,0,11],
+["زد","zed-fc",8,3,2,3,-1,11],
+["بتروجيت","petrojet-fc",8,2,3,3,-2,9],
+["المصري","al-masry-sc",8,2,3,3,-2,9],
+["القناة","olympic-el-qanah",8,1,5,2,-2,8],
+["طلائع الجيش","talaea-el-gaish-sc",8,2,2,4,-6,8],
+["وادي دجلة","wadi-degla-sc",8,1,4,3,-2,7],
+["إنبي","enppi-sc",8,2,1,5,-5,7],
+["غزل المحلة","ghazl-el-mahalla",8,2,1,5,-7,7],
+["بترول أسيوط","asyut-petrol",8,1,3,4,-4,6],
+["أبو قير للأسمدة","abu-qair-semad",8,1,1,6,-9,4],
+["الجونة","el-gouna-fc",8,0,3,5,-6,3]
+];
+
+const body = document.getElementById("standings");
+
+clubs.forEach((club,index)=>{
+ const [name,slug,played,wins,draws,losses,gd,points] = club;
+ const row = document.createElement("tr");
+ if(name === "الزمالك") row.className = "zamalek";
+
+ const logo = document.createElement("img");
+ logo.className = "logo";
+ logo.alt = name;
+ logo.src = `https://assets.footylogos.com/logos/${slug}/${slug}-logo-footylogos.svg`;
+ logo.onerror = function(){
+   this.style.display = "none";
+ };
+
+ const team = document.createElement("div");
+ team.className = "team-cell";
+ team.appendChild(logo);
+
+ const label = document.createElement("span");
+ label.textContent = name;
+ team.appendChild(label);
+
+ const values = [index+1,null,played,wins,draws,losses,gd,points];
+
+ values.forEach((value,i)=>{
+   const td = document.createElement("td");
+   if(i===1){
+     td.appendChild(team);
+   } else {
+     td.textContent = value;
+   }
+   if(i===7) td.className = "points";
+   row.appendChild(td);
+ });
+
+ body.appendChild(row);
+});
+</script>
+
+</body>
+</html>

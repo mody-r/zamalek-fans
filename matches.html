@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZAMALEK FANS - المباريات</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;font-family:Tahoma,Arial;color:#222}
+header{background:#bd0029;color:white;text-align:center;padding:23px}
+header h1{margin:0}
+nav{display:flex;gap:18px;overflow:auto;white-space:nowrap;background:white;padding:15px}
+nav a{color:#bd0029;text-decoration:none;font-weight:bold}
+.container{padding:16px}
+h2{border-right:5px solid #c90028;padding-right:10px}
+.match{background:white;border-radius:17px;padding:20px 12px;margin:17px 0;box-shadow:0 3px 12px #0001;cursor:pointer;text-align:center}
+.competition{color:#777;font-size:13px}
+.teams{display:flex;justify-content:space-around;align-items:center;margin:24px 0}
+.team{width:38%;font-weight:bold;display:flex;align-items:center;flex-direction:column;gap:10px}
+.team img{width:78px;height:78px;object-fit:contain}
+.vs{font-size:22px;font-weight:bold;color:#c90028}
+.date{color:#555;font-size:14px;margin:12px}
+.status{display:inline-block;padding:8px 17px;background:#e8f8ed;color:#15803d;border-radius:30px;font-size:12px}
+.button{width:100%;padding:15px;background:#bd0029;color:white;border:0;border-radius:10px;font-size:16px;font-weight:bold;margin:12px 0;cursor:pointer}
+.old{display:none}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:9;align-items:center;justify-content:center;padding:12px}
+.modal-content{background:white;border-radius:16px;padding:22px;width:100%;max-width:430px;max-height:85vh;overflow:auto}
+.modal-content h2{color:#bd0029}
+.info{background:#f5f5f5;padding:12px;border-radius:9px;margin:9px 0;font-size:14px;line-height:1.8}
+.close{float:left;background:#eee;border:0;padding:9px;border-radius:8px}
+footer{background:#222;color:white;text-align:center;padding:22px;margin-top:30px}
+</style>
+</head>
+<body>
+
+<header>
+<h1>ZAMALEK FANS ❤️🤍</h1>
+<p>مباريات القلعة البيضاء</p>
+</header>
+
+<nav>
+<a href="index.html">الرئيسية</a>
+<a href="news.html">الأخبار</a>
+<a href="matches.html">المباريات</a>
+<a href="league.html">الدوري</a>
+<a href="players.html">اللاعبين</a>
+<a href="history.html">التاريخ</a>
+<a href="media.html">الصور</a>
+<a href="contact.html">تواصل معنا</a>
+</nav>
+
+<div class="container">
+
+<h2>🔥 المباراة القادمة</h2>
+
+<div class="match" onclick="details('gouna')">
+<div class="competition">الدوري المصري الممتاز</div>
+<div class="teams">
+<div class="team">
+<img src="https://images.fotmob.com/image_resources/logo/teamlogo/178268.png" alt="شعار الجونة">
+الجونة
+</div>
+<div class="vs">VS</div>
+<div class="team">
+<img src="https://images.fotmob.com/image_resources/logo/teamlogo/80591.png" alt="شعار الزمالك">
+الزمالك
+</div>
+</div>
+<div class="date">23 نوفمبر 2026</div>
+<div class="date">3:00 مساءً بتوقيت مصر</div>
+<span class="status">المباراة القادمة</span>
+<p style="color:#bd0029">اضغط لعرض تفاصيل المباراة</p>
+</div>
+
+<button class="button" onclick="toggleOld()">
+📋 عرض النتائج السابقة
+</button>
+
+<div class="old" id="oldMatches">
+<h2>🏁 النتائج السابقة</h2>
+
+<div class="match" onclick="details('misr')">
+<div class="competition">كأس مصر</div>
+<div class="teams">
+<div class="team">
+<img src="https://images.fotmob.com/image_resources/logo/teamlogo/80591.png" alt="شعار الزمالك">
+الزمالك
+</div>
+<div class="vs">3 - 2</div>
+<div class="team">
+<div style="font-size:35px">⚽</div>
+مصر للتأمين
+</div>
+</div>
+<div class="date">6 نوفمبر 2026</div>
+<span class="status">انتهت المباراة</span>
+</div>
+
+<div class="match" onclick="details('degla')">
+<div class="competition">كأس الرابطة</div>
+<div class="teams">
+<div class="team">
+<div style="font-size:35px">⚽</div>
+وادي دجلة
+</div>
+<div class="vs">1 - 0</div>
+<div class="team">
+<img src="https://images.fotmob.com/image_resources/logo/teamlogo/80591.png" alt="شعار الزمالك">
+الزمالك
+</div>
+</div>
+<div class="date">2 نوفمبر 2026</div>
+<span class="status">انتهت المباراة</span>
+</div>
+
+<div class="match" onclick="details('mok')">
+<div class="competition">الدوري المصري</div>
+<div class="teams">
+<div class="team">
+<img src="https://images.fotmob.com/image_resources/logo/teamlogo/80591.png" alt="شعار الزمالك">
+الزمالك
+</div>
+<div class="vs">2 - 1</div>
+<div class="team">
+<div style="font-size:35px">⚽</div>
+المقاولون العرب
+</div>
+</div>
+<div class="date">28 أكتوبر 2026</div>
+<span class="status">انتهت المباراة</span>
+</div>
+</div>
+</div>
+
+<div class="modal" id="modal" onclick="outside(event)">
+<div class="modal-content">
+<button class="close" onclick="closeDetails()">✖ إغلاق</button>
+<h2 id="title">تفاصيل المباراة</h2>
+<div class="info" id="competition"></div>
+<div class="info" id="date"></div>
+<div class="info" id="time"></div>
+<div class="info" id="stadium"></div>
+<div class="info" id="result"></div>
+<h3>⚽ التشكيلات</h3>
+<div class="info" id="lineup"></div>
+<h3>📋 معلومات إضافية</h3>
+<div class="info" id="extra"></div>
+</div>
+</div>
+
+<footer>
+<h3>ZAMALEK FANS ❤️🤍</h3>
+<p>عالم القلعة البيضاء</p>
+<p>© 2026</p>
+</footer>
+
+<script>
+const data={
+gouna:{
+title:"الجونة × الزمالك",
+competition:"الدوري المصري الممتاز",
+date:"23 نوفمبر 2026",
+time:"3:00 مساءً بتوقيت مصر",
+stadium:"لم يتم تأكيد الملعب في البيانات المتاحة",
+result:"لم تبدأ المباراة",
+lineup:"التشكيل الرسمي لم يُعلن بعد.",
+extra:"سيتم تحديث التفاصيل عند الإعلان الرسمي."
+},
+misr:{
+title:"الزمالك × مصر للتأمين",
+competition:"كأس مصر",
+date:"6 نوفمبر 2026",
+time:"انتهت المباراة",
+stadium:"غير متوفر",
+result:"الزمالك 3 - 2 مصر للتأمين",
+lineup:"التشكيل الرسمي غير متوفر.",
+extra:"انتهت المباراة بفوز الزمالك."
+},
+degla:{
+title:"وادي دجلة × الزمالك",
+competition:"كأس الرابطة",
+date:"2 نوفمبر 2026",
+time:"انتهت المباراة",
+stadium:"غير متوفر",
+result:"وادي دجلة 1 - 0 الزمالك",
+lineup:"التشكيل الرسمي غير متوفر.",
+extra:"انتهت المباراة بفوز وادي دجلة."
+},
+mok:{
+title:"الزمالك × المقاولون العرب",
+competition:"الدوري المصري",
+date:"28 أكتوبر 2026",
+time:"انتهت المباراة",
+stadium:"غير متوفر",
+result:"الزمالك 2 - 1 المقاولون العرب",
+lineup:"التشكيل الرسمي غير متوفر.",
+extra:"انتهت المباراة بفوز الزمالك."
+}
+};
+
+function details(id){
+let m=data[id];
+document.getElementById("title").textContent=m.title;
+document.getElementById("competition").textContent="🏆 البطولة: "+m.competition;
+document.getElementById("date").textContent="📅 التاريخ: "+m.date;
+document.getElementById("time").textContent="⏰ الموعد: "+m.time;
+document.getElementById("stadium").textContent="🏟️ الاستاد: "+m.stadium;
+document.getElementById("result").textContent="⚽ النتيجة: "+m.result;
+document.getElementById("lineup").textContent=m.lineup;
+document.getElementById("extra").textContent=m.extra;
+document.getElementById("modal").style.display="flex";
+}
+
+function closeDetails(){
+document.getElementById("modal").style.display="none";
+}
+
+function outside(e){
+if(e.target.id==="modal")closeDetails();
+}
+
+function toggleOld(){
+let old=document.getElementById("oldMatches");
+let btn=document.querySelector(".button");
+let open=old.style.display==="block";
+old.style.display=open?"none":"block";
+btn.textContent=open?"📋 عرض النتائج السابقة":"إخفاء النتائج السابقة";
+}
+</script>
+</body>
+</html>

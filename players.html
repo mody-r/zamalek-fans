@@ -1,0 +1,464 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZAMALEK FANS - لاعبو الزمالك</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f4f6;font-family:Tahoma,Arial;color:#222}
+header{background:#bd0029;color:white;text-align:center;padding:23px}
+header h1{margin:0}
+nav{display:flex;gap:18px;overflow:auto;white-space:nowrap;background:white;padding:15px}
+nav a{color:#bd0029;text-decoration:none;font-weight:bold}
+.container{padding:15px}
+h2{border-right:5px solid #bd0029;padding-right:10px;margin-top:28px}
+.players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.player{background:white;border-radius:15px;padding:10px;text-align:center;box-shadow:0 3px 10px #0001;cursor:pointer}
+.player:active{transform:scale(.97)}
+.player img{width:100%;height:155px;object-fit:contain;background:#f8f8f8;border-radius:10px}
+.player h3{font-size:14px;margin:10px 0 5px}
+.number{color:#bd0029;font-weight:bold;font-size:13px}
+.position{font-size:12px;color:#777;margin-top:6px}
+.photo-fallback{width:100%;height:155px;background:#eee;border-radius:10px;display:grid;place-items:center;color:#bd0029;font-size:38px;font-weight:bold}
+.note{background:white;border-radius:12px;padding:13px;font-size:12px;line-height:1.8;color:#666;margin-top:20px}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:10;align-items:center;justify-content:center;padding:12px}
+.modal-content{background:white;border-radius:18px;padding:20px;width:100%;max-width:400px;max-height:90vh;overflow:auto;text-align:center}
+.modal-content img{width:155px;height:155px;object-fit:contain;background:#f6f6f6;border-radius:14px}
+.modal-content .photo-fallback{width:155px;height:155px;margin:auto}
+.modal-content h2{border:0;padding:0;color:#bd0029;margin:12px 0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.stat{background:#f5f5f5;padding:13px 5px;border-radius:10px}
+.stat strong{display:block;font-size:24px;color:#bd0029}
+.stat span{font-size:11px;color:#666}
+.close{width:100%;padding:13px;border:0;border-radius:10px;background:#bd0029;color:white;font-size:16px;margin-top:10px;cursor:pointer}
+footer{background:#222;color:white;text-align:center;padding:22px;margin-top:30px}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ZAMALEK FANS ❤️🤍</h1>
+<p>نجوم القلعة البيضاء</p>
+</header>
+
+<nav>
+<a href="index.html">الرئيسية</a>
+<a href="news.html">الأخبار</a>
+<a href="matches.html">المباريات</a>
+<a href="league.html">البطولات</a>
+<a href="players.html">اللاعبين</a>
+<a href="history.html">التاريخ</a>
+<a href="media.html">الصور</a>
+<a href="contact.html">تواصل معنا</a>
+</nav>
+
+<div class="container">
+
+<h2>🧤 حراس المرمى</h2>
+<div class="players" id="goalkeepers"></div>
+
+<h2>🛡️ خط الدفاع</h2>
+<div class="players" id="defenders"></div>
+
+<h2>🎯 خط الوسط</h2>
+<div class="players" id="midfielders"></div>
+
+<h2>🔥 خط الهجوم</h2>
+<div class="players" id="attackers"></div>
+
+<div class="note">
+📸 صور اللاعبين من ألبوم يلا كورة.
+<br>
+📊 إحصائيات موسم 2026-2027 من الدوري المصري.
+<br>
+الأرقام غير المتاحة تظهر بشرطة (—)، وقد تتغير مع المباريات الجديدة.
+</div>
+
+</div>
+
+<div class="modal" id="modal" onclick="closeOutside(event)">
+<div class="modal-content">
+
+<div id="modalPhoto"></div>
+<h2 id="playerName"></h2>
+<p id="playerInfo"></p>
+
+<h3>📊 إحصائيات موسم 2026-2027</h3>
+
+<div class="stats">
+<div class="stat">
+<strong id="matchesStat">—</strong>
+<span>المباريات</span>
+</div>
+
+<div class="stat">
+<strong id="goalsStat">—</strong>
+<span id="goalsLabel">الأهداف</span>
+</div>
+
+<div class="stat">
+<strong id="assistsStat">—</strong>
+<span id="assistsLabel">الأسيست</span>
+</div>
+</div>
+
+<p style="font-size:12px;color:#777">
+الإحصائيات للدوري المصري فقط.
+</p>
+
+<button class="close" onclick="closeModal()">إغلاق</button>
+
+</div>
+</div>
+
+<footer>
+<h3>ZAMALEK FANS ❤️🤍</h3>
+<p>عالم القلعة البيضاء</p>
+<p>© 2026</p>
+</footer>
+
+<script>
+
+const base="https://mediayk.gemini.media/gallery_videos/images/2026/8/16/";
+
+const photoMap={
+"محمود بنتايك":base+"1428420_normal.webp",
+"محمود جهاد":base+"1428421_thumb.webp",
+"مصطفى الزناري":base+"1428422_thumb.webp",
+"محمد عواد":base+"1428423_thumb.webp",
+"محمد شحاتة":base+"1428424_thumb.webp",
+"ناصر منسي":base+"1428425_thumb.webp",
+"يوسف وائل":base+"1428426_thumb.webp",
+"أحمد الجفالي":base+"1428396_thumb.webp",
+"أحمد عبد الرحيم إيشو":base+"1428398_thumb.webp",
+"أحمد ربيع":base+"1428399_thumb.webp",
+"أحمد حسام":base+"1428400_thumb.webp",
+"أحمد شريف":base+"1428401_thumb.webp",
+"مهدي سليمان":base+"1428403_thumb.webp",
+"حسام أشرف":base+"1428404_thumb.webp",
+"خوان بيزيرا":base+"1428405_thumb.webp",
+"سيف فاروق جعفر":base+"1428406_thumb.webp",
+"شيكو بانزا":base+"1428407_thumb.webp",
+"آدم كايد":base+"1428408_thumb.webp",
+"عبد الله السعيد":base+"1428409_thumb.webp",
+"أحمد فتوح":base+"1428410_thumb.webp",
+"عمرو ناصر":base+"1428411_thumb.webp",
+"محمد إبراهيم":base+"1428412_thumb.webp",
+"عمر جابر":base+"1428413_thumb.webp",
+"محمد السيد":base+"1428414_thumb.webp",
+"محمد إسماعيل":base+"1428415_thumb.webp",
+"عدي الدباغ":base+"1428416_thumb.webp",
+"محمد صبحي":base+"1428417_thumb.webp",
+"محمود الشناوي":base+"1428418_thumb.webp"
+};
+
+const teams={
+goalkeepers:[
+["مهدي سليمان",37],
+["محمد عواد",99],
+["محمد صبحي",16],
+["عمر عبد العزيز",38],
+["محمود الشناوي",46]
+],
+
+defenders:[
+["عمر جابر",4],
+["أحمد فتوح",13],
+["محمود حمدي الونش",28],
+["مصطفى الزناري",20],
+["محمد إسماعيل",24],
+["أحمد حسام",5],
+["محمد إبراهيم",52],
+["أحمد خضري",97],
+["محمد فرج",58],
+["محمود بنتايك",3]
+],
+
+midfielders:[
+["عبد الله السعيد",19],
+["محمد شحاتة",17],
+["أحمد شريف",31],
+["محمود جهاد",6],
+["أحمد عبد الرحيم إيشو",11],
+["أحمد ربيع",12],
+["محمد السيد",39],
+["يوسف وائل",44],
+["أحمد صفوت",56],
+["محمد حمد",55],
+["السيد أسامة",43],
+["أحمد الجفالي",21],
+["آدم كايد",18],
+["شيكو بانزا",81],
+["سيف فاروق جعفر",14],
+["خوان بيزيرا",33]
+],
+
+attackers:[
+["ناصر منسي",9],
+["عمرو ناصر",90],
+["حسام أشرف",7],
+["عدي الدباغ",98],
+["أدهم حسيب",57]
+]
+};
+
+// إحصائيات الدوري المصري 2026-2027
+// null معناها إن الرقم غير متاح في المصدر.
+
+const playerStats={
+
+"محمود حمدي الونش":{
+matches:8
+},
+
+"محمد شحاتة":{
+matches:8,
+assists:1
+},
+
+"عمر جابر":{
+matches:8
+},
+
+"محمد إسماعيل":{
+matches:8,
+goals:1
+},
+
+"مهدي سليمان":{
+matches:7,
+cleanSheets:4
+},
+
+"شيكو بانزا":{
+matches:8,
+goals:2
+},
+
+"محمود بنتايك":{
+matches:6,
+assists:2
+},
+
+"عدي الدباغ":{
+matches:8,
+assists:3
+},
+
+"أحمد ربيع":{
+matches:7
+},
+
+"أحمد شريف":{
+matches:7,
+goals:3
+},
+
+"أحمد فتوح":{
+matches:6
+},
+
+"حسام أشرف":{
+matches:7,
+goals:2
+},
+
+"عبد الله السعيد":{
+matches:6
+},
+
+"آدم كايد":{
+matches:4
+},
+
+"أحمد عبد الرحيم إيشو":{
+matches:6,
+goals:1
+},
+
+"ناصر منسي":{
+matches:4
+},
+
+"محمد السيد":{
+matches:4
+},
+
+"مصطفى الزناري":{
+matches:3
+},
+
+"محمد عواد":{
+matches:1,
+cleanSheets:1
+},
+
+"محمد فرج":{
+matches:1
+},
+
+"محمود جهاد":{
+matches:3
+},
+
+"أحمد الجفالي":{
+matches:1
+},
+
+"أحمد خضري":{
+matches:1
+}
+
+};
+
+function groupName(group){
+if(group==="goalkeepers")return "حارس مرمى";
+if(group==="defenders")return "مدافع";
+if(group==="midfielders")return "لاعب وسط";
+return "مهاجم";
+}
+
+function makePhoto(name){
+
+const box=document.createElement("div");
+const url=photoMap[name];
+
+if(url){
+
+const img=document.createElement("img");
+img.src=url;
+img.alt=name;
+img.loading="lazy";
+
+img.onerror=()=>{
+const fallback=document.createElement("div");
+fallback.className="photo-fallback";
+fallback.textContent=name.charAt(0);
+img.replaceWith(fallback);
+};
+
+box.appendChild(img);
+
+}else{
+
+const fallback=document.createElement("div");
+fallback.className="photo-fallback";
+fallback.textContent=name.charAt(0);
+box.appendChild(fallback);
+
+}
+
+return box;
+}
+
+function makeCard(p,group){
+
+const card=document.createElement("div");
+card.className="player";
+
+card.appendChild(makePhoto(p[0]));
+
+const name=document.createElement("h3");
+name.textContent=p[0];
+card.appendChild(name);
+
+const number=document.createElement("div");
+number.className="number";
+number.textContent="رقم "+p[1];
+card.appendChild(number);
+
+const position=document.createElement("div");
+position.className="position";
+position.textContent=groupName(group);
+card.appendChild(position);
+
+card.onclick=()=>showDetails(p,group);
+
+return card;
+}
+
+function showPlayers(){
+
+for(const group in teams){
+
+const container=document.getElementById(group);
+
+teams[group].forEach(p=>{
+container.appendChild(makeCard(p,group));
+});
+
+}
+
+}
+
+function showDetails(p,group){
+
+const photo=document.getElementById("modalPhoto");
+
+photo.innerHTML="";
+photo.appendChild(makePhoto(p[0]));
+
+document.getElementById("playerName").textContent=p[0];
+
+document.getElementById("playerInfo").textContent=
+"رقم القميص: "+p[1]+" | "+groupName(group);
+
+const stats=playerStats[p[0]] || {};
+
+document.getElementById("matchesStat").textContent=
+stats.matches ?? "—";
+
+if(group==="goalkeepers"){
+
+document.getElementById("goalsLabel").textContent=
+"الشباك النظيفة";
+
+document.getElementById("goalsStat").textContent=
+stats.cleanSheets ?? "—";
+
+document.getElementById("assistsLabel").textContent=
+"الأسيست";
+
+document.getElementById("assistsStat").textContent="—";
+
+}else{
+
+document.getElementById("goalsLabel").textContent=
+"الأهداف";
+
+document.getElementById("goalsStat").textContent=
+stats.goals ?? "—";
+
+document.getElementById("assistsLabel").textContent=
+"الأسيست";
+
+document.getElementById("assistsStat").textContent=
+stats.assists ?? "—";
+
+}
+
+document.getElementById("modal").style.display="flex";
+
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function closeOutside(e){
+if(e.target.id==="modal"){
+closeModal();
+}
+}
+
+showPlayers();
+
+</script>
+
+</body>
+</html>
+
